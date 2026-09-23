@@ -15,12 +15,19 @@ using std::string;
 using std::vector;
 
 struct studentas {
-    string var, pav;
-    vector<int> paz;
-    int egz;
+    string vardas, pavarde;
+    vector<int> pazymiai;
+    int egzaminas;
     double rezVid;
     double rezMed;
 };
+
+double skaiciuotiVidurki(const vector<int>& paz) {
+    if (paz.empty()) return 0.0;
+    double suma = 0;
+    for (int p : paz) suma += p;
+    return suma / paz.size();
+}
 
 double skaiciuotiMediana(vector<int> paz) {
     if (paz.empty()) return 0.0;
@@ -36,8 +43,8 @@ int main() {
 
     while (true) {
         studentas s;
-        cout << "\nIveskite studento varda: "; cin >> s.var;
-        cout << "Iveskite studento pavarde: "; cin >> s.pav;
+        cout << "\nIveskite studento varda: "; cin >> s.vardas;
+        cout << "Iveskite studento pavarde: "; cin >> s.pavarde;
 
         int ivestiesTipas;
         cout << "Kaip ivesti pazymius? (1 - Ranka, 2 - Generuoti atsitiktinai): ";
@@ -47,28 +54,26 @@ int main() {
             int kiek;
             cout << "Kiek pazymiu sugeneruoti? "; cin >> kiek;
             for (int i = 0; i < kiek; i++) {
-                s.paz.push_back(std::rand() % 10 + 1);
+                s.pazymiai.push_back(std::rand() % 10 + 1);
             }
-            s.egz = std::rand() % 10 + 1;
-            cout << "Sugeneruotas egzamino ivertinimas: " << s.egz << "\n";
+            s.egzaminas = std::rand() % 10 + 1;
+            cout << "Sugeneruotas egzamino ivertinimas: " << s.egzaminas << "\n";
         } else {
             cout << "Ivedinekite namu darbu pazymius (norėdami baigti, iveskite 0 arba neigiama skaiciu):\n";
             while (true) {
                 int p;
                 cout << "Pazymys: "; cin >> p;
                 if (p <= 0) break;
-                s.paz.push_back(p);
+                s.pazymiai.push_back(p);
             }
-            cout << "Iveskite egzamino ivertinima: "; cin >> s.egz;
+            cout << "Iveskite egzamino ivertinima: "; cin >> s.egzaminas;
         }
 
-        double suma = 0;
-        for (int p : s.paz) suma += p;
-        double vid = s.paz.empty() ? 0.0 : suma / s.paz.size();
-        double med = skaiciuotiMediana(s.paz);
+        double vid = skaiciuotiVidurki(s.pazymiai);
+        double med = skaiciuotiMediana(s.pazymiai);
 
-        s.rezVid = 0.4 * vid + 0.6 * s.egz;
-        s.rezMed = 0.4 * med + 0.6 * s.egz;
+        s.rezVid = 0.4 * vid + 0.6 * s.egzaminas;
+        s.rezMed = 0.4 * med + 0.6 * s.egzaminas;
 
         grupe.push_back(s);
 
@@ -95,7 +100,7 @@ int main() {
 
     cout << std::fixed << std::setprecision(2);
     for (const auto& st : grupe) {
-        cout << "|" << left << setw(15) << st.var << "|" << left << setw(20) << st.pav;
+        cout << "|" << left << setw(15) << st.vardas << "|" << left << setw(20) << st.pavarde;
 
         if (pasirinkimas == 1) cout << "|" << right << setw(18) << st.rezVid << "|\n";
         else if (pasirinkimas == 2) cout << "|" << right << setw(18) << st.rezMed << "|\n";
