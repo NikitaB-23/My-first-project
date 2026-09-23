@@ -25,21 +25,36 @@ double skaiciuotiMediana(vector<int> paz) {
 }
 
 int main() {
-    studentas s;
-    cout << "Iveskite studento varda: "; cin >> s.var;
-    cout << "Iveskite studento pavarde: "; cin >> s.pav;
+    vector<studentas> grupe;
 
-    int p;
-    cout << "Iveskite viena pazymi: "; cin >> p;
-    s.paz.push_back(p);
-    cout << "Iveskite egzamino ivertinima: "; cin >> s.egz;
+    while (true) {
+        studentas s;
+        cout << "\nIveskite studento varda: "; cin >> s.var;
+        cout << "Iveskite studento pavarde: "; cin >> s.pav;
 
-    double vid = s.paz[0];
-    double med = skaiciuotiMediana(s.paz);
+        cout << "Ivedinekite pazymius (0 - baigti):\n";
+        while (true) {
+            int p;
+            cout << "Pazymys: "; cin >> p;
+            if (p <= 0) break;
+            s.paz.push_back(p);
+        }
+        cout << "Iveskite egzamino ivertinima: "; cin >> s.egz;
 
-    s.rezVid = 0.4 * vid + 0.6 * s.egz;
-    s.rezMed = 0.4 * med + 0.6 * s.egz;
+        double suma = 0;
+        for (int p : s.paz) suma += p;
+        double vid = s.paz.empty() ? 0.0 : suma / s.paz.size();
+        double med = skaiciuotiMediana(s.paz);
 
-    cout << "Galutinis Vid: " << s.rezVid << " | Galutinis Med: " << s.rezMed << "\n";
+        s.rezVid = 0.4 * vid + 0.6 * s.egz;
+        s.rezMed = 0.4 * med + 0.6 * s.egz;
+
+        grupe.push_back(s);
+
+        char dar;
+        cout << "Ar norite ivesti dar viena studenta? (t/n): "; cin >> dar;
+        if (dar == 'n' || dar == 'N') break;
+    }
+
     return 0;
 }
