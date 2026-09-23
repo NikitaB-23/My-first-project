@@ -2,6 +2,8 @@
 #include <vector>
 #include <string>
 #include <algorithm>
+#include <cstdlib>
+#include <ctime>
 
 using std::cin;
 using std::cout;
@@ -25,6 +27,7 @@ double skaiciuotiMediana(vector<int> paz) {
 }
 
 int main() {
+    std::srand(std::time(0));
     vector<studentas> grupe;
 
     while (true) {
@@ -32,14 +35,28 @@ int main() {
         cout << "\nIveskite studento varda: "; cin >> s.var;
         cout << "Iveskite studento pavarde: "; cin >> s.pav;
 
-        cout << "Ivedinekite pazymius (0 - baigti):\n";
-        while (true) {
-            int p;
-            cout << "Pazymys: "; cin >> p;
-            if (p <= 0) break;
-            s.paz.push_back(p);
+        int ivestiesTipas;
+        cout << "Kaip ivesti pazymius? (1 - Ranka, 2 - Generuoti atsitiktinai): ";
+        cin >> ivestiesTipas;
+
+        if (ivestiesTipas == 2) {
+            int kiek;
+            cout << "Kiek pazymiu sugeneruoti? "; cin >> kiek;
+            for (int i = 0; i < kiek; i++) {
+                s.paz.push_back(std::rand() % 10 + 1);
+            }
+            s.egz = std::rand() % 10 + 1;
+            cout << "Sugeneruotas egzamino ivertinimas: " << s.egz << "\n";
+        } else {
+            cout << "Ivedinekite pazymius (0 - baigti):\n";
+            while (true) {
+                int p;
+                cout << "Pazymys: "; cin >> p;
+                if (p <= 0) break;
+                s.paz.push_back(p);
+            }
+            cout << "Iveskite egzamino ivertinima: "; cin >> s.egz;
         }
-        cout << "Iveskite egzamino ivertinima: "; cin >> s.egz;
 
         double suma = 0;
         for (int p : s.paz) suma += p;
