@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include <vector>
 #include <string>
 #include <algorithm>
@@ -7,6 +8,9 @@
 
 using std::cin;
 using std::cout;
+using std::left;
+using std::right;
+using std::setw;
 using std::string;
 using std::vector;
 
@@ -48,7 +52,7 @@ int main() {
             s.egz = std::rand() % 10 + 1;
             cout << "Sugeneruotas egzamino ivertinimas: " << s.egz << "\n";
         } else {
-            cout << "Ivedinekite pazymius (0 - baigti):\n";
+            cout << "Ivedinekite namu darbu pazymius (norėdami baigti, iveskite 0 arba neigiama skaiciu):\n";
             while (true) {
                 int p;
                 cout << "Pazymys: "; cin >> p;
@@ -69,8 +73,33 @@ int main() {
         grupe.push_back(s);
 
         char dar;
-        cout << "Ar norite ivesti dar viena studenta? (t/n): "; cin >> dar;
+        cout << "\nAr norite ivesti dar viena studenta? (t/n): "; cin >> dar;
         if (dar == 'n' || dar == 'N') break;
+    }
+
+    if (grupe.empty()) return 0;
+
+    int pasirinkimas;
+    cout << "\nPasirinkite isvedima (1 - Vidurkis, 2 - Mediana, 3 - Abu): ";
+    cin >> pasirinkimas;
+
+    cout << "\n";
+    cout << "|" << left << setw(15) << "Vardas" << "|" << left << setw(20) << "Pavarde";
+
+    if (pasirinkimas == 1) cout << "|" << right << setw(18) << "Galutinis (Vid.)" << "|\n";
+    else if (pasirinkimas == 2) cout << "|" << right << setw(18) << "Galutinis (Med.)" << "|\n";
+    else cout << "|" << right << setw(18) << "Galutinis (Vid.)" << "|" << right << setw(18) << "Galutinis (Med.)" << "|\n";
+
+    int ilgis = (pasirinkimas == 3) ? 73 : 54;
+    cout << "|"; for (int i = 0; i < ilgis; i++) cout << "-"; cout << "|\n";
+
+    cout << std::fixed << std::setprecision(2);
+    for (const auto& st : grupe) {
+        cout << "|" << left << setw(15) << st.var << "|" << left << setw(20) << st.pav;
+
+        if (pasirinkimas == 1) cout << "|" << right << setw(18) << st.rezVid << "|\n";
+        else if (pasirinkimas == 2) cout << "|" << right << setw(18) << st.rezMed << "|\n";
+        else cout << "|" << right << setw(18) << st.rezVid << "|" << right << setw(18) << st.rezMed << "|\n";
     }
 
     return 0;
