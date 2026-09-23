@@ -37,6 +37,11 @@ double skaiciuotiMediana(vector<int> paz) {
     else return paz[n / 2];
 }
 
+bool lygintiPagalPavarde(const studentas& a, const studentas& b) {
+    if (a.pavarde == b.pavarde) return a.vardas < b.vardas;
+    return a.pavarde < b.pavarde;
+}
+
 int main() {
     std::srand(std::time(0));
     vector<studentas> grupe;
@@ -78,11 +83,13 @@ int main() {
         grupe.push_back(s);
 
         char dar;
-        cout << "\nAr norite ivesti dar viena studenta? (t/n): "; cin >> dar;
+        cout << "\n Ar norite ivesti dar viena studenta? (t/n): "; cin >> dar;
         if (dar == 'n' || dar == 'N') break;
     }
 
     if (grupe.empty()) return 0;
+
+    std::sort(grupe.begin(), grupe.end(), lygintiPagalPavarde);
 
     int pasirinkimas;
     cout << "\nPasirinkite isvedima (1 - Vidurkis, 2 - Mediana, 3 - Abu): ";
