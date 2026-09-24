@@ -8,6 +8,7 @@
 #include <fstream>
 #include <sstream>
 #include <limits>
+#include <filesystem>
 
 using std::cin;
 using std::cout;
@@ -78,6 +79,10 @@ void generuotiAtsitiktiniStudenta(studentas& s) {
 }
 
 void nuskaitytiIsFailo(vector<studentas>& grupe, const string& failoPavadinimas) {
+    cout << "Darbo katalogas: " << std::filesystem::current_path() << "\n";
+    cout << "Ieskomas failas: " << std::filesystem::absolute(failoPavadinimas) << "\n";
+    cout << "Failas egzistuoja: " << (std::filesystem::exists(failoPavadinimas) ? "TAIP" : "NE") << "\n";
+
     std::ifstream in(failoPavadinimas);
     if (!in.is_open()) {
         cout << "Nepavyko atidaryti failo!\n";
