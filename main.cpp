@@ -44,98 +44,74 @@ bool lygintiPagalPavarde(const studentas& a, const studentas& b) {
     return a.pavarde < b.pavarde;
 }
 
-int main() {
-    std::srand(std::time(0));
-    vector<studentas> grupe;
+void ivestiStudenta(studentas& s) {
+    cout << "\nIveskite studento varda: "; cin >> s.vardas;
+    cout << "Iveskite studento pavarde: "; cin >> s.pavarde;
 
-    int ivestiesSaltinis;
-    cout << "Pasirinkite ivesties buda (1 - Ranka/Generuoti, 2 - Skaityti is failo): ";
-    cin >> ivestiesSaltinis;
+    int ivestiesTipas;
+    cout << "Kaip ivesti pazymius? (1 - Ranka, 2 - Generuoti atsitiktinai): ";
+    cin >> ivestiesTipas;
 
-    if (ivestiesSaltinis == 2) {
-        string failoPavadinimas;
-        cout << "Iveskite failo pavadinima: "; cin >> failoPavadinimas;
-        std::ifstream in(failoPavadinimas);
-
-        if (in.is_open()) {
-            string eilute;
-            std::getline(in, eilute); // Praleidžiame antraštę
-
-            while (std::getline(in, eilute)) {
-                if (eilute.empty()) continue;
-                std::istringstream ss(eilute);
-                studentas s;
-                if (ss >> s.vardas >> s.pavarde) {
-                    int p;
-                    while (ss >> p) s.pazymiai.push_back(p);
-                    if (!s.pazymiai.empty()) {
-                        s.egzaminas = s.pazymiai.back();
-                        s.pazymiai.pop_back();
-
-                        double vid = skaiciuotiVidurki(s.pazymiai);
-                        double med = skaiciuotiMediana(s.pazymiai);
-                        s.rezVid = 0.4 * vid + 0.6 * s.egzaminas;
-                        s.rezMed = 0.4 * med + 0.6 * s.egzaminas;
-
-                        grupe.push_back(s);
-                    }
-                }
-            }
-            in.close();
-        } else {
-            cout << "Nepavyko atidaryti failo!\n";
+    if (ivestiesTipas == 2) {
+        int kiek;
+        cout << "Kiek pazymiu sugeneruoti? "; cin >> kiek;
+        for (int i = 0; i < kiek; i++) {
+            s.pazymiai.push_back(std::rand() % 10 + 1);
         }
+        s.egzaminas = std::rand() % 10 + 1;
+        cout << "Sugeneruotas egzamino ivertinimas: " << s.egzaminas << "\n";
     } else {
+        cout << "Ivedinekite namu darbu pazymius (norėdami baigti, iveskite 0 arba neigiama skaiciu):\n";
         while (true) {
-            studentas s;
-            cout << "\nIveskite studento varda: "; cin >> s.vardas;
-            cout << "Iveskite studento pavarde: "; cin >> s.pavarde;
-
-            int ivestiesTipas;
-            cout << "Kaip ivesti pazymius? (1 - Ranka, 2 - Generuoti atsitiktinai): ";
-            cin >> ivestiesTipas;
-
-            if (ivestiesTipas == 2) {
-                int kiek;
-                cout << "Kiek pazymiu sugeneruoti? "; cin >> kiek;
-                for (int i = 0; i < kiek; i++) {
-                    s.pazymiai.push_back(std::rand() % 10 + 1);
-                }
-                s.egzaminas = std::rand() % 10 + 1;
-                cout << "Sugeneruotas egzamino ivertinimas: " << s.egzaminas << "\n";
-            } else {
-                cout << "Ivedinekite namu darbu pazymius (norėdami baigti, iveskite 0 arba neigiama skaiciu):\n";
-                while (true) {
-                    int p;
-                    cout << "Pazymys: "; cin >> p;
-                    if (p <= 0) break;
-                    s.pazymiai.push_back(p);
-                }
-                cout << "Iveskite egzamino ivertinima: "; cin >> s.egzaminas;
-            }
-
-            double vid = skaiciuotiVidurki(s.pazymiai);
-            double med = skaiciuotiMediana(s.pazymiai);
-
-            s.rezVid = 0.4 * vid + 0.6 * s.egzaminas;
-            s.rezMed = 0.4 * med + 0.6 * s.egzaminas;
-
-            grupe.push_back(s);
-
-            char dar;
-            cout << "\nAr norite ivesti dar viena studenta? (t/n): "; cin >> dar;
-            if (dar == 'n' || dar == 'N') break;
+            int p;
+            cout << "Pazymys: "; cin >> p;
+            if (p <= 0) break;
+            s.pazymiai.push_back(p);
         }
+        cout << "Iveskite egzamino ivertinima: "; cin >> s.egzaminas;
     }
 
-    if (grupe.empty()) return 0;
+    double vid = skaiciuotiVidurki(s.pazymiai);
+    double med = skaiciuotiMediana(s.pazymiai);
+    s.rezVid = 0.4 * vid + 0.6 * s.egzaminas;
+    s.rezMed = 0.4 * med + 0.6 * s.egzaminas;
+}
 
-    std::sort(grupe.begin(), grupe.end(), lygintiPagalPavarde);
+void nuskaitytiIsFailo(vector<studentas>& grupe, const string& failoPavadinimas) {
+    std::ifstream in(failoPavadinimas);
+    if (!in.is_open()) {
+        cout << "Nepavyko atidaryti failo!\n";
+        return;
+    }
 
-    int pasirinkimas;
-    cout << "\nPasirinkite isvedima (1 - Vidurkis, 2 - Mediana, 3 - Abu): ";
-    cin >> pasirinkimas;
+    string eilute;
+    std::getline(in, eilute);
 
+    while (std::getline(in, eilute)) {
+        if (eilute.empty()) continue;
+        std::istringstream ss(eilute);
+        studentas s;
+        if (ss >> s.vardas >> s.pavarde) {
+            int p;
+            while (ss >> p) s.pazymiai.push_back(p);
+            if (!s.pazymiai.empty()) {
+                s.egzaminas = s.pazymiai.back();
+                s.pazymiai.pop_back();
+
+                double vid = skaiciuotiVidurki(s.pazymiai);
+                double med = skaiciuotiMediana(s.pazymiai);
+                s.rezVid = 0.4 * vid + 0.6 * s.egzaminas;
+                s.rezMed = 0.4 * med + 0.6 * s.egzaminas;
+
+                grupe.push_back(s);
+            }
+        }
+    }
+    in.close();
+    cout << "Duomenys sekmingai nuskaityti is failo.\n";
+}
+
+void spausdintiRezultatus(const vector<studentas>& grupe, int pasirinkimas) {
     cout << "\n";
     cout << "|" << left << setw(15) << "Vardas" << "|" << left << setw(20) << "Pavarde";
 
@@ -153,6 +129,53 @@ int main() {
         if (pasirinkimas == 1) cout << "|" << right << setw(18) << st.rezVid << "|\n";
         else if (pasirinkimas == 2) cout << "|" << right << setw(18) << st.rezMed << "|\n";
         else cout << "|" << right << setw(18) << st.rezVid << "|" << right << setw(18) << st.rezMed << "|\n";
+    }
+}
+
+int main() {
+    std::srand(std::time(0));
+    vector<studentas> grupe;
+    int pasirinkimas;
+
+    while (true) {
+        cout << "\n--- MENIU ---\n";
+        cout << "1 - Ivesti studenta ranka / generuoti\n";
+        cout << "2 - Nuskaityti studentus is failo\n";
+        cout << "3 - Rodyti rezultatus lenteleje\n";
+        cout << "0 - Baigti darba\n";
+        cout << "Pasirinkite veiksma: ";
+        cin >> pasirinkimas;
+
+        if (pasirinkimas == 0) break;
+
+        if (pasirinkimas == 1) {
+            char dar;
+            do {
+                studentas s;
+                ivestiStudenta(s);
+                grupe.push_back(s);
+                cout << "\nAr norite ivesti dar viena studenta? (t/n): "; cin >> dar;
+            } while (dar == 't' || dar == 'T');
+        }
+        else if (pasirinkimas == 2) {
+            string fn;
+            cout << "Iveskite failo pavadinima: "; cin >> fn;
+            nuskaitytiIsFailo(grupe, fn);
+        }
+        else if (pasirinkimas == 3) {
+            if (grupe.empty()) {
+                cout << "Sarasas tuscias! Is pradziu iveskite arba nuskaitykite duomenis.\n";
+            } else {
+                std::sort(grupe.begin(), grupe.end(), lygintiPagalPavarde);
+                int isv;
+                cout << "Rodyti: 1 - Vidurki, 2 - Mediana, 3 - Abu: ";
+                cin >> isv;
+                spausdintiRezultatus(grupe, isv);
+            }
+        }
+        else {
+            cout << "Neteisingas pasirinkimas!\n";
+        }
     }
 
     return 0;
