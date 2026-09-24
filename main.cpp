@@ -5,6 +5,8 @@
 #include <algorithm>
 #include <cstdlib>
 #include <ctime>
+#include <fstream>
+#include <sstream>
 
 using std::cin;
 using std::cout;
@@ -46,45 +48,84 @@ int main() {
     std::srand(std::time(0));
     vector<studentas> grupe;
 
-    while (true) {
-        studentas s;
-        cout << "\nIveskite studento varda: "; cin >> s.vardas;
-        cout << "Iveskite studento pavarde: "; cin >> s.pavarde;
+    int ivestiesSaltinis;
+    cout << "Pasirinkite ivesties buda (1 - Ranka/Generuoti, 2 - Skaityti is failo): ";
+    cin >> ivestiesSaltinis;
 
-        int ivestiesTipas;
-        cout << "Kaip ivesti pazymius? (1 - Ranka, 2 - Generuoti atsitiktinai): ";
-        cin >> ivestiesTipas;
+    if (ivestiesSaltinis == 2) {
+        string failoPavadinimas;
+        cout << "Iveskite failo pavadinima: "; cin >> failoPavadinimas;
+        std::ifstream in(failoPavadinimas);
 
-        if (ivestiesTipas == 2) {
-            int kiek;
-            cout << "Kiek pazymiu sugeneruoti? "; cin >> kiek;
-            for (int i = 0; i < kiek; i++) {
-                s.pazymiai.push_back(std::rand() % 10 + 1);
+        if (in.is_open()) {
+            string eilute;
+            std::getline(in, eilute); // Praleidžiame antraštę
+
+            while (std::getline(in, eilute)) {
+                if (eilute.empty()) continue;
+                std::istringstream ss(eilute);
+                studentas s;
+                if (ss >> s.vardas >> s.pavarde) {
+                    int p;
+                    while (ss >> p) s.pazymiai.push_back(p);
+                    if (!s.pazymiai.empty()) {
+                        s.egzaminas = s.pazymiai.back();
+                        s.pazymiai.pop_back();
+
+                        double vid = skaiciuotiVidurki(s.pazymiai);
+                        double med = skaiciuotiMediana(s.pazymiai);
+                        s.rezVid = 0.4 * vid + 0.6 * s.egzaminas;
+                        s.rezMed = 0.4 * med + 0.6 * s.egzaminas;
+
+                        grupe.push_back(s);
+                    }
+                }
             }
-            s.egzaminas = std::rand() % 10 + 1;
-            cout << "Sugeneruotas egzamino ivertinimas: " << s.egzaminas << "\n";
+            in.close();
         } else {
-            cout << "Ivedinekite namu darbu pazymius (norėdami baigti, iveskite 0 arba neigiama skaiciu):\n";
-            while (true) {
-                int p;
-                cout << "Pazymys: "; cin >> p;
-                if (p <= 0) break;
-                s.pazymiai.push_back(p);
-            }
-            cout << "Iveskite egzamino ivertinima: "; cin >> s.egzaminas;
+            cout << "Nepavyko atidaryti failo!\n";
         }
+    } else {
+        while (true) {
+            studentas s;
+            cout << "\nIveskite studento varda: "; cin >> s.vardas;
+            cout << "Iveskite studento pavarde: "; cin >> s.pavarde;
 
-        double vid = skaiciuotiVidurki(s.pazymiai);
-        double med = skaiciuotiMediana(s.pazymiai);
+            int ivestiesTipas;
+            cout << "Kaip ivesti pazymius? (1 - Ranka, 2 - Generuoti atsitiktinai): ";
+            cin >> ivestiesTipas;
 
-        s.rezVid = 0.4 * vid + 0.6 * s.egzaminas;
-        s.rezMed = 0.4 * med + 0.6 * s.egzaminas;
+            if (ivestiesTipas == 2) {
+                int kiek;
+                cout << "Kiek pazymiu sugeneruoti? "; cin >> kiek;
+                for (int i = 0; i < kiek; i++) {
+                    s.pazymiai.push_back(std::rand() % 10 + 1);
+                }
+                s.egzaminas = std::rand() % 10 + 1;
+                cout << "Sugeneruotas egzamino ivertinimas: " << s.egzaminas << "\n";
+            } else {
+                cout << "Ivedinekite namu darbu pazymius (norėdami baigti, iveskite 0 arba neigiama skaiciu):\n";
+                while (true) {
+                    int p;
+                    cout << "Pazymys: "; cin >> p;
+                    if (p <= 0) break;
+                    s.pazymiai.push_back(p);
+                }
+                cout << "Iveskite egzamino ivertinima: "; cin >> s.egzaminas;
+            }
 
-        grupe.push_back(s);
+            double vid = skaiciuotiVidurki(s.pazymiai);
+            double med = skaiciuotiMediana(s.pazymiai);
 
-        char dar;
-        cout << "\n Ar norite ivesti dar viena studenta? (t/n): "; cin >> dar;
-        if (dar == 'n' || dar == 'N') break;
+            s.rezVid = 0.4 * vid + 0.6 * s.egzaminas;
+            s.rezMed = 0.4 * med + 0.6 * s.egzaminas;
+
+            grupe.push_back(s);
+
+            char dar;
+            cout << "\nAr norite ivesti dar viena studenta? (t/n): "; cin >> dar;
+            if (dar == 'n' || dar == 'N') break;
+        }
     }
 
     if (grupe.empty()) return 0;
