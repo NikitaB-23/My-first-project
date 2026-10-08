@@ -17,8 +17,7 @@ void testuotiFailaSuVidurkiu(const std::string& failoVardas,
                               int rikiavimas,
                               int isvedimas,
                               int kartai) {
-    cout << "\n=== Failas " << failoVardas
-         << " (vidurkis is " << kartai << " testu) ===\n";
+    cout << "\n=== Failas " << failoVardas << " ===\n";
 
     double sumNuskaitymas = 0, sumRusiavimas = 0, sumSkirstymas = 0;
     double sumVargsai = 0, sumKietiakiai = 0;
