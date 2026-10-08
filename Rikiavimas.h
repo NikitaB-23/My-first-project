@@ -10,7 +10,6 @@ void rikiuotiStudentus(std::vector<Studentas>& studentai,
 
 void skirstytiStudentus(std::vector<Studentas>& studentai,
                         std::vector<Studentas>& vargsai,
-                        std::vector<Studentas>& kietiakiai,
-                        Strategija strategija);
+                        std::vector<Studentas>& kietiakiai);
 
 #endif // RIKIAVIMAS_H_INCLUDED
