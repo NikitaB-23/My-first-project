@@ -95,9 +95,11 @@ void paleistiTyrima() {
     cout << "  studentai10000.txt      (3 kartai)\n";
     cout << "  studentai100000.txt     (3 kartai)\n";
     cout << "  studentai1000000.txt    (3 kartai)\n";
+    cout << "  studentai10000000.txt   (3 kartai)\n";
 
     testuotiFailaSuVidurkiu("studentai1000.txt",    rikiavimas, isvedimas, 3);
     testuotiFailaSuVidurkiu("studentai10000.txt",   rikiavimas, isvedimas, 3);
     testuotiFailaSuVidurkiu("studentai100000.txt",  rikiavimas, isvedimas, 3);
     testuotiFailaSuVidurkiu("studentai1000000.txt", rikiavimas, isvedimas, 3);
+    // testuotiFailaSuVidurkiu("studentai10000000.txt", rikiavimas, isvedimas, 3);
 }
