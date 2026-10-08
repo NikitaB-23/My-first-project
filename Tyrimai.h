@@ -5,7 +5,6 @@
 #include <string>
 
 void testuotiFailaSuVidurkiu(const std::string& failoVardas,
-                              Strategija strategija,
                               int rikiavimas,
                               int isvedimas,
                               int kartai);
