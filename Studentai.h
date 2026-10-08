@@ -13,12 +13,6 @@ struct Studentas {
     double rezMed = 0.0;
 };
 
-enum class Strategija {
-    EIGERIS,
-    DVIEJU,
-    OPTIMALI
-};
-
 int randPaz();
 double skaiciuotiVidurki(const std::vector<int>& paz);
 double skaiciuotiMediana(std::vector<int> paz);
