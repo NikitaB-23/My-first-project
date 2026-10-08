@@ -13,7 +13,6 @@ using Clock = std::chrono::high_resolution_clock;
 using Seconds = std::chrono::duration<double>;
 
 void testuotiFailaSuVidurkiu(const std::string& failoVardas,
-                              Strategija strategija,
                               int rikiavimas,
                               int isvedimas,
                               int kartai) {
@@ -38,7 +37,7 @@ void testuotiFailaSuVidurkiu(const std::string& failoVardas,
 
         std::vector<Studentas> vargsai, kietiakiai;
         auto t5 = Clock::now();
-        skirstytiStudentus(studentai, vargsai, kietiakiai, strategija);
+        skirstytiStudentus(studentai, vargsai, kietiakiai);
         auto t6 = Clock::now();
         sumSkirstymas += Seconds(t6 - t5).count();
 
@@ -91,13 +90,14 @@ void paleistiTyrima() {
         cout << "Klaida! 1, 2 arba 3: ";
     }
 
-    std::vector<std::string> failai = {
-        "studentai1000.txt",
-        "studentai10000.txt",
-        "studentai100000.txt",
-        "studentai1000000.txt"
-    };
+    cout << "\nTestuojami failai:\n";
+    cout << "  studentai1000.txt       (3 kartai)\n";
+    cout << "  studentai10000.txt      (3 kartai)\n";
+    cout << "  studentai100000.txt     (3 kartai)\n";
+    cout << "  studentai1000000.txt    (3 kartai)\n";
 
-    for (const auto& f : failai)
-        testuotiFailaSuVidurkiu(f, Strategija::OPTIMALI, rikiavimas, isvedimas, 3);
+    testuotiFailaSuVidurkiu("studentai1000.txt",    rikiavimas, isvedimas, 3);
+    testuotiFailaSuVidurkiu("studentai10000.txt",   rikiavimas, isvedimas, 3);
+    testuotiFailaSuVidurkiu("studentai100000.txt",  rikiavimas, isvedimas, 3);
+    testuotiFailaSuVidurkiu("studentai1000000.txt", rikiavimas, isvedimas, 3);
 }
