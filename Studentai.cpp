@@ -1,12 +1,9 @@
 #include "Studentas.h"
 #include <algorithm>
-#include <random>
-
-static std::mt19937 gen(42);
-static std::uniform_int_distribution<int> dist(1, 10);
+#include <cstdlib>
 
 int randPaz() {
-    return dist(gen);
+    return std::rand() % 10 + 1;
 }
 
 double skaiciuotiVidurki(const std::vector<int>& paz) {
