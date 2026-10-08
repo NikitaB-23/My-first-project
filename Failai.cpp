@@ -4,7 +4,7 @@
 #include <sstream>
 #include <iomanip>
 #include <chrono>
-#include <random>
+#include <cstdlib>
 
 using std::cout;
 
@@ -20,13 +20,11 @@ double generuotiFaila(const std::string& failoVardas, int n) {
         return 0.0;
     }
 
-    std::mt19937 gen(42);
-    std::uniform_int_distribution<int> nd(1, 10);
-
     for (int i = 1; i <= n; ++i) {
         out << "Vardas" << i << " Pavarde" << i;
-        for (int j = 0; j < 5; ++j) out << " " << nd(gen);
-        out << " " << nd(gen) << "\n";
+        for (int j = 0; j < 5; ++j)
+            out << " " << (std::rand() % 10 + 1);
+        out << " " << (std::rand() % 10 + 1) << "\n";
     }
 
     out.close();
