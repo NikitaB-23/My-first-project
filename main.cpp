@@ -19,7 +19,7 @@ int main() {
     int pasirinkimas;
 
     while (true) {
-        cout << "\n--- MENIU ---\n";
+        cout << "\nMENIU:\n";
         cout << "1 - Ivesti studenta ranka\n";
         cout << "2 - Generuoti studentu sarasa\n";
         cout << "3 - Nuskaityti studentus is failo\n";
