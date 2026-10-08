@@ -46,30 +46,29 @@ void ivestiStudenta(Studentas& s) {
 
 void spausdintiRezultatus(const std::vector<Studentas>& grupe, int pasirinkimas) {
     cout << "\n";
-    cout << "|" << std::left << std::setw(15) << "Vardas"
-         << "|" << std::left << std::setw(20) << "Pavarde";
+    cout << std::left << std::setw(15) << "Vardas"
+         << std::left << std::setw(20) << "Pavarde";
 
     if (pasirinkimas == 1)
-        cout << "|" << std::right << std::setw(18) << "Galutinis (Vid.)" << "|\n";
+        cout << std::right << std::setw(18) << "Galutinis (Vid.)";
     else if (pasirinkimas == 2)
-        cout << "|" << std::right << std::setw(18) << "Galutinis (Med.)" << "|\n";
+        cout << std::right << std::setw(18) << "Galutinis (Med.)";
     else
-        cout << "|" << std::right << std::setw(18) << "Galutinis (Vid.)"
-             << "|" << std::right << std::setw(18) << "Galutinis (Med.)" << "|\n";
-
-    int ilgis = (pasirinkimas == 3) ? 73 : 54;
-    cout << "|"; for (int i = 0; i < ilgis; i++) cout << "-"; cout << "|\n";
+        cout << std::right << std::setw(18) << "Galutinis (Vid.)"
+             << std::right << std::setw(18) << "Galutinis (Med.)";
+    cout << "\n";
 
     cout << std::fixed << std::setprecision(2);
     for (const auto& s : grupe) {
-        cout << "|" << std::left << std::setw(15) << s.vardas
-             << "|" << std::left << std::setw(20) << s.pavarde;
+        cout << std::left << std::setw(15) << s.vardas
+             << std::left << std::setw(20) << s.pavarde;
         if (pasirinkimas == 1)
-            cout << "|" << std::right << std::setw(18) << s.rezVid << "|\n";
+            cout << std::right << std::setw(18) << s.rezVid;
         else if (pasirinkimas == 2)
-            cout << "|" << std::right << std::setw(18) << s.rezMed << "|\n";
+            cout << std::right << std::setw(18) << s.rezMed;
         else
-            cout << "|" << std::right << std::setw(18) << s.rezVid
-                 << "|" << std::right << std::setw(18) << s.rezMed << "|\n";
+            cout << std::right << std::setw(18) << s.rezVid
+                 << std::right << std::setw(18) << s.rezMed;
+        cout << "\n";
     }
 }
