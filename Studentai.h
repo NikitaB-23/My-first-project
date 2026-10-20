@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <list>
 
 struct Studentas {
     std::string vardas;
@@ -13,13 +14,16 @@ struct Studentas {
     double rezMed = 0.0;
 };
 
+// PIRMAM TESTUI (VECTOR): palik taip
+using StudentuKon = std::vector<Studentas>; 
+// using StudentuKon = std::list<Studentas>;
+
 int randPaz();
 double skaiciuotiVidurki(const std::vector<int>& paz);
 double skaiciuotiMediana(std::vector<int> paz);
 void skaiciuotiRezultatus(Studentas& s);
-
 bool lygintiPagalPavarde(const Studentas& a, const Studentas& b);
 bool lygintiPagalVarda(const Studentas& a, const Studentas& b);
 bool lygintiPagalGalutini(const Studentas& a, const Studentas& b);
 
-#endif // STUDENTAS_H_INCLUDED
+#endif
