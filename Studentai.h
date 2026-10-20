@@ -14,8 +14,8 @@ struct Studentas {
     double rezMed = 0.0;
 };
 
-// PIRMAM TESTUI (VECTOR): palik taip
-using StudentuKon = std::vector<Studentas>; 
+// PIRMAM TESTUI
+using StudentuKon = std::vector<Studentas>;
 // using StudentuKon = std::list<Studentas>;
 
 int randPaz();
