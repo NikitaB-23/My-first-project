@@ -4,7 +4,7 @@
 #include <iostream>
 #include <iomanip>
 #include <chrono>
-#include <vector>
+#include <string>
 
 using std::cin;
 using std::cout;
@@ -12,21 +12,17 @@ using std::cout;
 using Clock = std::chrono::high_resolution_clock;
 using Seconds = std::chrono::duration<double>;
 
-void testuotiFailaSuVidurkiu(const std::string& failoVardas,
-                              int rikiavimas,
-                              int isvedimas,
-                              int kartai) {
+void testuotiFailaSuVidurkiu(const std::string& failoVardas, int rikiavimas, int isvedimas, int kartai) {
     cout << "\n=== Failas " << failoVardas << " ===\n";
 
     double sumNuskaitymas = 0, sumRusiavimas = 0, sumSkirstymas = 0;
     double sumVargsai = 0, sumKietiakiai = 0;
-    std::size_t vargsaiSk = 0, kietiakiaiSk = 0;
 
     std::string kriterijus = (rikiavimas == 1) ? "vardas" : "pavarde";
 
     for (int k = 0; k < kartai; ++k) {
         auto t1 = Clock::now();
-        auto studentai = nuskaitytiIsFailo(failoVardas);
+        StudentuKon studentai = nuskaitytiIsFailo(failoVardas);
         auto t2 = Clock::now();
         sumNuskaitymas += Seconds(t2 - t1).count();
 
@@ -35,7 +31,7 @@ void testuotiFailaSuVidurkiu(const std::string& failoVardas,
         auto t4 = Clock::now();
         sumRusiavimas += Seconds(t4 - t3).count();
 
-        std::vector<Studentas> vargsai, kietiakiai;
+        StudentuKon vargsai, kietiakiai;
         auto t5 = Clock::now();
         skirstytiStudentus(studentai, vargsai, kietiakiai);
         auto t6 = Clock::now();
@@ -50,28 +46,17 @@ void testuotiFailaSuVidurkiu(const std::string& failoVardas,
         isvestiIFaila("kietiakiai_" + failoVardas, kietiakiai, isvedimas);
         auto t10 = Clock::now();
         sumKietiakiai += Seconds(t10 - t9).count();
-
-        vargsaiSk = vargsai.size();
-        kietiakiaiSk = kietiakiai.size();
     }
 
-    double vidNuskaitymas = sumNuskaitymas / kartai;
-    double vidRusiavimas  = sumRusiavimas  / kartai;
-    double vidSkirstymas  = sumSkirstymas  / kartai;
-    double vidVargsai     = sumVargsai     / kartai;
-    double vidKietiakiai  = sumKietiakiai  / kartai;
-    double vidViso = vidNuskaitymas + vidRusiavimas + vidSkirstymas
-                   + vidVargsai + vidKietiakiai;
+    double vidViso = sumNuskaitymas + sumRusiavimas + sumSkirstymas + sumVargsai + sumKietiakiai;
 
     cout << std::fixed << std::setprecision(6);
-    cout << "Nuskaitymo laikas: " << vidNuskaitymas << "\n";
-    cout << "Rusiavimo laikas (pagal " << kriterijus << "): " << vidRusiavimas << "\n";
-    cout << "Dalijimo i dvi grupes laikas: " << vidSkirstymas << "\n";
-    cout << "Vargsai isvedimas i faila: " << vidVargsai << "\n";
-    cout << "Kietiakiai isvedimas i faila: " << vidKietiakiai << "\n";
-    cout << "BENDRAS laikas: " << vidViso << "\n";
-    cout << "Vargsai: " << vargsaiSk
-         << ", Kietiakiai: " << kietiakiaiSk << "\n";
+    cout << "Nuskaitymo laikas: " << (sumNuskaitymas/kartai) << "\n";
+    cout << "Rusiavimo laikas: " << (sumRusiavimas/kartai) << "\n";
+    cout << "Dalijimo i dvi grupes laikas: " << (sumSkirstymas/kartai) << "\n";
+    cout << "Vargsai isvedimas: " << (sumVargsai/kartai) << "\n";
+    cout << "Kietiakiai isvedimas: " << (sumKietiakiai/kartai) << "\n";
+    cout << "BENDRAS laikas: " << (vidViso/kartai) << "\n";
 }
 
 void paleistiTyrima() {
@@ -80,26 +65,19 @@ void paleistiTyrima() {
     int rikiavimas;
     while (!(cin >> rikiavimas) || (rikiavimas != 1 && rikiavimas != 2)) {
         cin.clear(); cin.ignore(10000, '\n');
-        cout << "Klaida! 1 arba 2: ";
+        cout << "Klaida: ";
     }
 
     cout << "Rodyti: 1 - Vidurki, 2 - Mediana, 3 - Abu: ";
     int isvedimas;
     while (!(cin >> isvedimas) || isvedimas < 1 || isvedimas > 3) {
         cin.clear(); cin.ignore(10000, '\n');
-        cout << "Klaida! 1, 2 arba 3: ";
+        cout << "Klaida: ";
     }
 
-    cout << "\nTestuojami failai:\n";
-    cout << "  studentai1000.txt       (3 kartai)\n";
-    cout << "  studentai10000.txt      (3 kartai)\n";
-    cout << "  studentai100000.txt     (3 kartai)\n";
-    cout << "  studentai1000000.txt    (3 kartai)\n";
-    cout << "  studentai10000000.txt   (3 kartai)\n";
-
-    testuotiFailaSuVidurkiu("studentai1000.txt",    rikiavimas, isvedimas, 3);
-    testuotiFailaSuVidurkiu("studentai10000.txt",   rikiavimas, isvedimas, 3);
-    testuotiFailaSuVidurkiu("studentai100000.txt",  rikiavimas, isvedimas, 3);
+    testuotiFailaSuVidurkiu("studentai1000.txt", rikiavimas, isvedimas, 3);
+    testuotiFailaSuVidurkiu("studentai10000.txt", rikiavimas, isvedimas, 3);
+    testuotiFailaSuVidurkiu("studentai100000.txt", rikiavimas, isvedimas, 3);
     testuotiFailaSuVidurkiu("studentai1000000.txt", rikiavimas, isvedimas, 3);
-    // testuotiFailaSuVidurkiu("studentai10000000.txt", rikiavimas, isvedimas, 3);
+    testuotiFailaSuVidurkiu("studentai10000000.txt", rikiavimas, isvedimas, 1);
 }
