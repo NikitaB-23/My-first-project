@@ -61,7 +61,7 @@ void spausdintiRezultatus(const StudentuKon& grupe, int pasirinkimas) {
         if (pasirinkimas == 1) cout << "|" << std::right << std::setw(18) << s.rezVid << "|";
         else if (pasirinkimas == 2) cout << "|" << std::right << std::setw(18) << s.rezMed << "|";
         else cout << "|" << std::right << std::setw(18) << s.rezVid << "|" << std::right << std::setw(18) << s.rezMed << "|";
-        
+
         cout << " Adresas: " << &s << "\n";
     }
 }
