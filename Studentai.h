@@ -5,6 +5,11 @@
 #include <vector>
 #include <list>
 
+struct Studentas;
+
+using StudentuKon = std::vector<Studentas>;
+// using StudentuKon = std::list<Studentas>;
+
 struct Studentas {
     std::string vardas;
     std::string pavarde;
@@ -13,6 +18,7 @@ struct Studentas {
     double rezVid = 0.0;
     double rezMed = 0.0;
 };
+
 
 // PIRMAM TESTUI
 using StudentuKon = std::vector<Studentas>;
