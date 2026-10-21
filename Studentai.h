@@ -5,11 +5,6 @@
 #include <vector>
 #include <list>
 
-struct Studentas;
-
-using StudentuKon = std::vector<Studentas>;
-// using StudentuKon = std::list<Studentas>;
-
 struct Studentas {
     std::string vardas;
     std::string pavarde;
@@ -19,10 +14,8 @@ struct Studentas {
     double rezMed = 0.0;
 };
 
-
-// PIRMAM TESTUI
-using StudentuKon = std::vector<Studentas>;
-// using StudentuKon = std::list<Studentas>;
+typedef std::vector<Studentas> StudentuKon;
+// typedef std::list<Studentas> StudentuKon;
 
 int randPaz();
 double skaiciuotiVidurki(const std::vector<int>& paz);
