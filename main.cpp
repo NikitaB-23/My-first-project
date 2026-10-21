@@ -67,10 +67,9 @@ int main() {
         else if (pasirinkimas == 4) {
             if (grupe.empty()) cout << "Sarasas tuscias!\n";
             else {
-                int isv;
+                int isv, rik;
                 cout << "Rodyti: 1 - Vidurki, 2 - Mediana, 3 - Abu: ";
                 while (!(cin >> isv) || isv < 1 || isv > 3) { cin.clear(); cin.ignore(10000, '\n'); }
-                int rik;
                 cout << "Rikiuoti pagal: 1 - Varda, 2 - Pavarde: ";
                 while (!(cin >> rik) || (rik != 1 && rik != 2)) { cin.clear(); cin.ignore(10000, '\n'); }
                 if (rik == 1) rikiuotiStudentus(grupe, "vardas");
