@@ -4,11 +4,7 @@
 #include "Studentas.h"
 #include <string>
 
-void testuotiFailaSuVidurkiu(const std::string& failoVardas,
-                              int rikiavimas,
-                              int isvedimas,
-                              int kartai);
-
+void testuotiFailaSuVidurkiu(const std::string& failoVardas, int rikiavimas, int isvedimas, int kartai);
 void paleistiTyrima();
 
-#endif // TYRIMAI_H_INCLUDED
+#endif
