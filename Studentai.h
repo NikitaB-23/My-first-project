@@ -14,7 +14,7 @@ struct Studentas {
     double rezMed = 0.0;
 };
 
-using StudentuKon = std::vector<Studentas>;
+typedef std::vector<Studentas> StudentuKon;
 // using StudentuKon = std::list<Studentas>;
 
 int randPaz();
