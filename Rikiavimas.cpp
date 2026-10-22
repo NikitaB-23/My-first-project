@@ -1,32 +1,25 @@
 #include "Rikiavimas.h"
 #include <algorithm>
+#include <list>
 
-void rikiuotiStudentus(std::vector<Studentas>& studentai, const std::string& kriterijus) {
-    if (kriterijus == "vardas") std::sort(studentai.begin(), studentai.end(), lygintiPagalVarda);
-    else if (kriterijus == "pavarde") std::sort(studentai.begin(), studentai.end(), lygintiPagalPavarde);
-    else std::sort(studentai.begin(), studentai.end(), lygintiPagalGalutini);
+void rikiuotiStudentus(StudentuKon& studentai, const std::string& kriterijus, Tvarka tvarka) {
+    auto cmp = [kriterijus, tvarka](const Studentas& a, const Studentas& b) {
+        if (kriterijus == "vardas") return tvarka == Tvarka::Didejimo ? a.vardas < b.vardas : a.vardas > b.vardas;
+        if (kriterijus == "pavarde") return tvarka == Tvarka::Didejimo ? a.pavarde < b.pavarde : a.pavarde > b.pavarde;
+        return tvarka == Tvarka::Didejimo ? a.rezVid < b.rezVid : a.rezVid > b.rezVid;
+    };
+
+    std::sort(studentai.begin(), studentai.end(), cmp);
+    //studentai.sort(cmp);
 }
 
-void rikiuotiStudentus(std::list<Studentas>& studentai, const std::string& kriterijus) {
-    if (kriterijus == "vardas") studentai.sort(lygintiPagalVarda);
-    else if (kriterijus == "pavarde") studentai.sort(lygintiPagalPavarde);
-    else studentai.sort(lygintiPagalGalutini);
-}
+void skirstytiStudentus(StudentuKon& studentai, StudentuKon& vargsai, StudentuKon& kietiakiai) {
 
-void skirstytiStudentus(std::vector<Studentas>& studentai, std::vector<Studentas>& vargsai, std::vector<Studentas>& kietiakiai) {
     vargsai.reserve(studentai.size() / 2);
-    kietiakiai.reserve(studentai.size() / 2);
-    for (auto it = studentai.begin(); it != studentai.end(); ) {
-        if (it->rezVid < 5.0) vargsai.push_back(std::move(*it));
-        else kietiakiai.push_back(std::move(*it));
-        it = studentai.erase(it);
-    }
-}
+   kietiakiai.reserve(studentai.size() / 2);
 
-void skirstytiStudentus(std::list<Studentas>& studentai, std::list<Studentas>& vargsai, std::list<Studentas>& kietiakiai) {
-    for (auto it = studentai.begin(); it != studentai.end(); ) {
-        if (it->rezVid < 5.0) vargsai.push_back(std::move(*it));
-        else kietiakiai.push_back(std::move(*it));
-        it = studentai.erase(it);
+    for (auto& s : studentai) {
+        if (s.rezVid < 5.0) vargsai.push_back(std::move(s));
+        else kietiakiai.push_back(std::move(s));
     }
 }
