@@ -6,23 +6,20 @@
 #include <list>
 
 struct Studentas {
-    std::string vardas;
-    std::string pavarde;
+    std::string vardas, pavarde;
     std::vector<int> pazymiai;
     int egzaminas = 0;
-    double rezVid = 0.0;
-    double rezMed = 0.0;
+    double rezVid = 0.0, rezMed = 0.0;
 };
 
 typedef std::vector<Studentas> StudentuKon;
-// using StudentuKon = std::list<Studentas>;
+//typedef std::list<Studentas> StudentuKon;
+
+enum class Tvarka { Didejimo, Mazejimo };
 
 int randPaz();
 double skaiciuotiVidurki(const std::vector<int>& paz);
 double skaiciuotiMediana(std::vector<int> paz);
 void skaiciuotiRezultatus(Studentas& s);
-bool lygintiPagalPavarde(const Studentas& a, const Studentas& b);
-bool lygintiPagalVarda(const Studentas& a, const Studentas& b);
-bool lygintiPagalGalutini(const Studentas& a, const Studentas& b);
 
 #endif
