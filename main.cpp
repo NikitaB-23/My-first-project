@@ -1,5 +1,7 @@
 #include <iostream>
+#include <iomanip>
 #include <vector>
+#include <list>
 #include <cstdlib>
 #include <ctime>
 #include "Studentas.h"
@@ -12,16 +14,19 @@ using namespace std;
 
 int main() {
     srand(time(0));
-    StudentuKon grupe;
+    vector<Studentas> grupeVec;
+    list<Studentas> grupeList;
     int pas;
+
     while (true) {
         cout << "\nMENIU:\n";
-        cout << "1 - Ivesti studenta ranka\n";
-        cout << "2 - Generuoti studentu sarasa\n";
-        cout << "3 - Rodyti studentus lenteleje\n";
-        cout << "4 - Sugeneruoti 5 testinius failus\n";
-        cout << "5 - Tyrimas su NAUJAI sugeneruotais failais\n";
-        cout << "6 - Tyrimas su JAU TURIMAIS failais\n";
+        cout << "1 - Ivesti studenta ranka (Vector)\n";
+        cout << "2 - Ivesti studenta ranka (List)\n";
+        cout << "3 - Generuoti studentu sarasa\n";
+        cout << "4 - Rodyti rezultatus lenteleje\n";
+        cout << "5 - Sugeneruoti 5 testinius failus\n";
+        cout << "6 - Tyrimas su NAUJAI sugeneruotais failais\n";
+        cout << "7 - Tyrimas su JAU TURIMAIS failais\n";
         cout << "0 - Baigti darba\n";
         cout << "Pasirinkite: ";
 
@@ -33,55 +38,64 @@ int main() {
             do {
                 Studentas s;
                 ivestiStudenta(s);
-                grupe.push_back(s);
-                cout << "Studento atminties adresas: " << &grupe.back() << "\n";
+                grupeVec.push_back(s);
+                cout << "Studento atminties adresas: " << &grupeVec.back() << "\n";
                 cout << "Ar dar viena? (t/n): "; cin >> dar;
             } while (dar == 't' || dar == 'T');
         }
         else if (pas == 2) {
-            int kiek;
-            cout << "Kiek studentu? ";
+            char dar;
+            do {
+                Studentas s;
+                ivestiStudenta(s);
+                grupeList.push_back(s);
+                cout << "Studento atminties adresas: " << &grupeList.back() << "\n";
+                cout << "Ar dar viena? (t/n): "; cin >> dar;
+            } while (dar == 't' || dar == 'T');
+        }
+        else if (pas == 3) {
+            int kiek; cout << "Kiek studentu? ";
             while (!(cin >> kiek) || kiek <= 0) { cin.clear(); cin.ignore(10000, '\n'); }
             for (int i = 0; i < kiek; i++) {
                 Studentas s;
-                s.vardas = "Vardas" + std::to_string(i + 1);
-                s.pavarde = "Pavarde" + std::to_string(i + 1);
+                s.vardas = "Vardas" + to_string(i + 1);
+                s.pavarde = "Pavarde" + to_string(i + 1);
                 for (int j = 0; j < 5; j++) s.pazymiai.push_back(randPaz());
                 s.egzaminas = randPaz();
                 skaiciuotiRezultatus(s);
-                grupe.push_back(s);
+                grupeVec.push_back(s);
             }
             cout << "Sugeneruota " << kiek << " studentu.\n";
         }
-        else if (pas == 3) {
-            if (grupe.empty()) {
-                cout << "Sarasas tuscias! Pirma ikelkite duomenis.\n";
+        else if (pas == 4) {
+            if (grupeVec.empty()) {
+                cout << "Sarasas tuscias!\n";
             } else {
                 int isv, r, tv;
-                cout << "Rodyti: 1 - Vidurki, 2 - Mediana, 3 - Abu: ";
-                while (!(cin >> isv) || isv < 1 || isv > 3) { cin.clear(); cin.ignore(10000, '\n'); }
-                cout << "Rikiuoti pagal: 1 - Varda, 2 - Pavarde: ";
-                while (!(cin >> r) || (r != 1 && r != 2)) { cin.clear(); cin.ignore(10000, '\n'); }
+                cout << "Rodyti: 1 - Vidurki, 2 - Mediana: ";
+                while (!(cin >> isv) || (isv != 1 && isv != 2)) { cin.clear(); cin.ignore(10000, '\n'); }
+
+                cout << "Rikiuoti pagal: 1 - Varda, 2 - Pavarde, 3 - Galutini bala: ";
+                while (!(cin >> r) || r < 1 || r > 3) { cin.clear(); cin.ignore(10000, '\n'); }
+
                 cout << "Tvarka: 1 - Didejimo, 2 - Mazejimo: ";
                 while (!(cin >> tv) || (tv != 1 && tv != 2)) { cin.clear(); cin.ignore(10000, '\n'); }
-                string krit = (r == 1) ? "vardas" : "pavarde";
+
+                string krit = (r == 1) ? "vardas" : (r == 2 ? "pavarde" : "galutinis");
                 Tvarka t = (tv == 1) ? Tvarka::Didejimo : Tvarka::Mazejimo;
-                rikiuotiStudentus(grupe, krit, t);
-                spausdintiRezultatus(grupe, isv);
+                rikiuotiStudentus(grupeVec, krit, t);
+                spausdintiRezultatus(grupeVec, isv);
             }
         }
-        else if (pas == 4) {
-            generuotiFaila("studentai1000.txt", 1000);
-            generuotiFaila("studentai10000.txt", 10000);
-            generuotiFaila("studentai100000.txt", 100000);
-            generuotiFaila("studentai1000000.txt", 1000000);
-            generuotiFaila("studentai10000000.txt", 10000000);
+        else if (pas == 5) {
+            generuotiFaila("studentai1000.txt", 1000); generuotiFaila("studentai10000.txt", 10000);
+            generuotiFaila("studentai100000.txt", 100000); generuotiFaila("studentai1000000.txt", 1000000); generuotiFaila("studentai10000000.txt", 10000000);
             cout << "Sugeneruota!\n";
         }
-        else if (pas == 5) {
+        else if (pas == 6) {
             paleistiTyrima(true);
         }
-        else if (pas == 6) {
+        else if (pas == 7) {
             paleistiTyrima(false);
         }
     }
