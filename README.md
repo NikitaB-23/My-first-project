@@ -46,7 +46,7 @@ Pridėtas `CMakeLists.txt` instaliatorius, leidžiantis sukompiliuoti programą 
 Testavimas atliktas su anksčiau sugeneruotais failais (1000, 10 000, 100 000, 1 000 000, 10 000 000 įrašų). Kiekvienas testas buvo pakartotas 3 kartus ir pateiktas laikų vidurkis. Šioje lentelėje pateikti rezultatai:
 
 
-### 1. std::vector konteinerio rezultatai
+### std::vector konteinerio rezultatai
 
 | Studentų skaičius | Vidutinis nuskaitymo laikas | Vidutinis rūšiavimo laikas | Vidutinis dalijimo laikas(1 str.) | Vidutinis dalijimo laikas(2 str.) | Vidutinis dalijimo laikas(3 str.) | Vidutinis vargšų išvedimas | Vidutinis kietakių išvedimas | Vidutinis bendras laikas |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :---|
@@ -58,7 +58,7 @@ Testavimas atliktas su anksčiau sugeneruotais failais (1000, 10 000, 100 000, 1
 
 
 
-### 1. std::list konteinerio rezultatai
+### std::list konteinerio rezultatai
 
 | Studentų skaičius | Vidutinis nuskaitymo laikas | Vidutinis rūšiavimo laikas | Vidutinis dalijimo laikas(1 str.) | Vidutinis dalijimo laikas(2 str.) | Vidutinis dalijimo laikas(3 str.) | Vidutinis vargšų išvedimas | Vidutinis kietakių išvedimas | Vidutinis bendras laikas |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :---|
@@ -69,6 +69,19 @@ Testavimas atliktas su anksčiau sugeneruotais failais (1000, 10 000, 100 000, 1
 | 10000000 | 32.253 | 19.093 | 5.697 | 5.507 | 8.730 | 18.371 | 25.210 | 103.658 |
 
 
+## Tyrimų rezultatų išvados
+
+1. **Nuskaitymas ir rūšiavimas:** Failo nuskaitymas abiem konteineriams užima panašiai laiko. Tačiau **rūšiavimas su `vector` yra dvigubai greitesnis** (pvz., 10M įrašų: 9.3s prieš 19.1s).
+
+2. **Dalijimo strategijos:** 
+   * **1 strategija:** `vector` žymiai greitesnis, nes kopijuoti į vientisą atmintį yra greičiau nei kurti naujus `list` elementus.
+   * **2 strategija:** `list` šiek tiek laimi (2.7s prieš 3.9s ties 10M), nes ištrinti elementą iš sąrašo yra paprasčiau nei stumti visą vektorių.
+   * **3 strategija:** Tai greičiausias būdas `vector` atveju, nes panaudojus `std::partition` ir `std::move` išvengiama brangaus duomenų kopijavimo.
+
+3. **Išvedimas į failą:** Tai yra lėčiausia dalis visoje programoje (10M įrašų užtrunka 17–25s).
+
+**Galutinė mintis:** Nors `list` turi pranašumą trinant elementus, bendrai paėmus **`std::vector` yra žymiai universalesnis ir greitesnis pasirinkimas**. Geriausias rezultatas pasiekiamas naudojant `vector` kartu su 3-čia optimizuota strategija.
+
 <img width="493" height="463" alt="Screenshot 2026-11-04 165741" src="https://github.com/user-attachments/assets/90ba9ac6-a41c-44d6-bbe0-afbb5c353ca3" />
 <img width="421" height="469" alt="Screenshot 2026-11-04 165756" src="https://github.com/user-attachments/assets/b44a0919-cd52-4819-a763-8fb587fb017b" />
 <img width="424" height="317" alt="Screenshot 2026-11-04 165809" src="https://github.com/user-attachments/assets/59ed2a7c-7655-49df-a93d-e56734da12b2" />
@@ -76,3 +89,29 @@ Testavimas atliktas su anksčiau sugeneruotais failais (1000, 10 000, 100 000, 1
 <img width="374" height="308" alt="Screenshot 2026-11-04 165853" src="https://github.com/user-attachments/assets/3237081b-9da2-49db-a270-a087c0808050" />
 
 
+
+##  Įdiegimo (Instaliavimo) instrukcija
+
+Norint sukompiliuoti ir paleisti šią programą, jums reikės:
+* C++ kompiliatoriaus.
+* `CMake` įrankio.
+
+**Kompiliavimo ir paleidimo žingsniai:**
+
+1. Atsidarykite terminalą (arba Command Prompt) programos kataloge, kur yra `CMakeLists.txt` failas.
+2. Sukurkite projekto build katalogą ir sugeneruokite reikiamus failus:
+   ```bash
+   cmake -B build
+
+##  Naudojimosi instrukcija
+
+Paleidus programą, jūsų ekrane pasirodys pagrindinis meniu. Štai kaip naudotis pagrindinėmis funkcijomis:
+
+1. **Duomenų įvedimas (1 ir 2 punktai):** Pasirinkę `1` arba `2`, galite rankiniu būdu įvesti vieną ar daugiau studentų. Programa paprašys vardo, pavardės, pažymių ir egzamino balo. Galite rinktis, ar pažymius įvesti ranka, ar juos sugeneruoti automatiškai.
+2. **Studentų generavimas (3 punktas):** Pasirinkus šį punktą, programa automatiškai sugeneruos nurodytą skaičių studentų su atsitiktiniais pažymiais. Tai patogu norint greitai pamatyti, kaip veikia rikiavimas.
+3. **Rezultatų peržiūra (4 punktas):** Jei jau turite įvestų studentų, šis punktas leidžia išrikiuoti juos pagal pasirinktą kriterijų (vardą, pavardę ar galutinį balą) ir išvesti gražiai suformatuotą lentelę į ekraną.
+4. **Failų generavimas (5 punktas):** Programa automatiškai sukurs penkis testavimo failus (`studentai1000.txt`, `studentai10000.txt` ir t.t.) su skirtingu studentų skaičiumi. Šie failai reikalingi spartos tyrimams.
+5. **Spartos tyrimai (6 ir 7 punktai):** 
+   * Pasirinkus `6`, programa sugeneruos naujus failus ir iš karto atliks tyrimą.
+   * Pasirinkus `7`, tyrimas bus atliekamas su jau esamais failais. 
+   * Tyrimo metu programa paprašys pasirinkti konteinerį (`1` - Vector, `2` - List), rikiavimo kriterijų ir rodymo būdą. Rezultatai (laikai sekundėmis) bus išvedami į ekraną, o išskirstyti studentai bus išsaugoti naujuose `.txt` failuose.
