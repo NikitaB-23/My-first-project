@@ -3,7 +3,8 @@
 #include "Studentas.h"
 #include <string>
 
-void testuotiVienaFaila(const std::string& failoVardas, int rikiavimas, Tvarka tvarka, int isvedimas, int kartai);
+void testuotiStrategijasVector(const std::string& failoVardas, int rikiavimas, Tvarka tvarka, int isvedimas, int kartai);
+void testuotiStrategijasList(const std::string& failoVardas, int rikiavimas, Tvarka tvarka, int isvedimas, int kartai);
 void paleistiTyrima(bool generuotiFailus);
 
 #endif
