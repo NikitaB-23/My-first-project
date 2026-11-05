@@ -18,13 +18,8 @@ double skaiciuotiMediana(std::vector<int> paz) {
 }
 
 void skaiciuotiRezultatus(Studentas& s) {
-    s.rezVid = 0.4 * skaiciuotiVidurki(s.pazymiai) + 0.6 * s.egzaminas;
-    s.rezMed = 0.4 * skaiciuotiMediana(s.pazymiai) + 0.6 * s.egzaminas;
+    s.vidurkis = skaiciuotiVidurki(s.pazymiai);
+    s.mediana = skaiciuotiMediana(s.pazymiai);
+    s.rezVid = 0.4 * s.vidurkis + 0.6 * s.egzaminas;
+    s.rezMed = 0.4 * s.mediana + 0.6 * s.egzaminas;
 }
-
-bool lygintiPagalPavarde(const Studentas& a, const Studentas& b) {
-    if (a.pavarde == b.pavarde) return a.vardas < b.vardas;
-    return a.pavarde < b.pavarde;
-}
-bool lygintiPagalVarda(const Studentas& a, const Studentas& b) { return a.vardas < b.vardas; }
-bool lygintiPagalGalutini(const Studentas& a, const Studentas& b) { return a.rezVid > b.rezVid; }
