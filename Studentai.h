@@ -9,12 +9,13 @@ struct Studentas {
     std::string vardas, pavarde;
     std::vector<int> pazymiai;
     int egzaminas = 0;
-    double rezVid = 0.0, rezMed = 0.0;
+    double vidurkis = 0.0;
+    double mediana = 0.0;
+    double rezVid = 0.0;
+    double rezMed = 0.0;
 };
 
 typedef std::vector<Studentas> StudentuKon;
-//typedef std::list<Studentas> StudentuKon;
-
 enum class Tvarka { Didejimo, Mazejimo };
 
 int randPaz();
